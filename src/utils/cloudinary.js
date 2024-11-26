@@ -1,4 +1,5 @@
 import { v2 as cloudinary } from 'cloudinary';
+import fs  from "fs";
 
 //configure cloudinary
 cloudinary.config({ 
@@ -10,8 +11,21 @@ cloudinary.config({
 
 const uploadCloudinary = async (localFilePath) =>{
     try{
-
+        if (!localFilePath) return null;
+        const response = await cloudinary.uploader.upload(
+            localFilePath, {
+                resource_type: "auto"
+            }
+        )
+        console.log("File uploaded on cloudinary. File src: "+ response.url);
+        //once the file is uploaded, delete it from server
+        fs.unlinkSync(localFilePath)
+        return response
     }catch(error){
-        
+        //delete file from server
+        fs.unlinkSync(localFilePath)
+        return null
     }
 }
+
+export {cloudinary}
