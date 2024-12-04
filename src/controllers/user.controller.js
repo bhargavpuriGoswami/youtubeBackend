@@ -4,6 +4,7 @@ import {User} from "../models/user.model.js"
 import { deleteCloudinary, uploadCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 
 const generateAccessAndRefreshToken = async (userId)=>{
@@ -28,14 +29,13 @@ const generateAccessAndRefreshToken = async (userId)=>{
 
 const registerUser = asyncHandler(async (req,res)=>{
     const {fullName,email,username,password}=req.body
-
-    console.log();
+    console.log(req.body);
     
     if(JSON.stringify(req.body)=="{}"){
         throw new ApiError(400, "All fields are required")
     }
     if(fullName?.trim()===""){
-        throw new ApiError(400, "All fields are required")
+        throw new ApiError(400, "Name is required")
     }
 
     const existedUser = await User.findOne({
@@ -43,7 +43,7 @@ const registerUser = asyncHandler(async (req,res)=>{
     })
 
     if (existedUser) {
-        throw new ApiError(400, "Username already exist")
+        throw new ApiError(400, "User already exist")
     }
 
     const avatarLocalPath=req.files?.avatar[0]?.path 
@@ -94,9 +94,11 @@ const loginUser = asyncHandler(async (req,res)=>{
 
     //validate data
     if(JSON.stringify(req.body)=="{}"){
+        console.log(req.body);
         throw new ApiError(400, "All fields are required")
     }
     if(email?.trim()===""){
+        console.log(req.body);
         throw new ApiError(400, "All fields are required")
     }
 
@@ -105,14 +107,14 @@ const loginUser = asyncHandler(async (req,res)=>{
     })
 
     if(!user){
-        throw new ApiError(400, "User not found")
+        throw new ApiError(401, "User not found")
     }
 
     //check password
     const isPasswordCorrect = await user.isPasswordCorrect(password)
 
     if(!isPasswordCorrect){
-        throw new ApiError(400, "Password is incorrect")
+        throw new ApiError(401, "Password is incorrect")
     }
 
     //generate tokens
@@ -186,7 +188,7 @@ const refreshAccessToken = asyncHandler(async (req,res)=>{
 })
 
 const logoutUser = asyncHandler(async (req,res)=>{
-    await User,findByIdAndUpdate(
+    await User.findByIdAndUpdate(
         req.user._id,
         {
            $set: {refreshToken:undefined} 
@@ -226,8 +228,8 @@ const changePassword = asyncHandler(async (req,res)=>{
 })
 
 const getCurrentUser = asyncHandler(async (req,res)=>{ 
-    const user = await User.findById(req.user?._id)
-
+    const user = await User.findById(req.user?._id);
+    
     if(!user){
         throw new ApiError(404, "User not found")
     }
@@ -266,10 +268,12 @@ const updateUserAvatar = asyncHandler(async (req,res)=>{
     }
 
     const avatar = await uploadCloudinary(avatarLocalPath)
-
+    const deleteAvatarId = await getAvatarId(req.user?._id)
+    const deletedAvatar = await deleteCloudinary(deleteAvatarId)
     if(!avatar.url){
         throw new ApiError(500, "Something went wrong while uploading avatar")
     }
+
 
     const user = await User.findByIdAndUpdate(req.user?._id,
         {
@@ -297,6 +301,8 @@ const updateUserCoverImage = asyncHandler(async (req,res)=>{
         throw new ApiError(500, "Something went wrong while uploading avatar")
     }
 
+    const deleteCoverId = await getCoverImageId(req.user?._id)
+    const deletedCover = await deleteCloudinary(deleteCoverId)
     const user = await User.findByIdAndUpdate(req.user?._id,
         {
             $set: {
@@ -307,7 +313,7 @@ const updateUserCoverImage = asyncHandler(async (req,res)=>{
 
     return res
             .status(200)
-            .json(new ApiResponse(200,user,"Avatar updated successfully"))
+            .json(new ApiResponse(200,user,"Cover Image updated successfully"))
 })
 
 const getUserChannelProfile = asyncHandler(async (req,res)=>{
@@ -402,6 +408,20 @@ const getWatchHistory = asyncHandler(async (req,res)=>{
             .json(new ApiResponse(200,watchHistory[0].watchHistory,"Watch history fetched successfully"))
 
 })
+
+const getAvatarId = async (userId)=>{
+    const { avatar } = await User.findById(userId).select("avatar")
+    let publicId = avatar.substring(avatar.lastIndexOf('/') + 1)
+    publicId = publicId.substring(0, publicId.lastIndexOf('.'))
+    return publicId
+}
+
+const getCoverImageId = async (userId)=>{
+    const { coverImage } = await User.findById(userId).select("coverImage")
+    let publicId = coverImage.substring(coverImage.lastIndexOf('/') + 1)
+    publicId = publicId.substring(0, publicId.lastIndexOf('.'))
+    return publicId
+}
 
 
 

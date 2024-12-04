@@ -10,22 +10,23 @@ import {    loginUser,
             getUserChannelProfile,
             updateAccountDetails,
             updateUserAvatar,
-            getWatchHistory
+            getWatchHistory,
+            updateUserCoverImage
         } from "../controllers/user.controller.js"; 
 
 const router = Router()
 
 router.route("/register").post(
-    upload.fields([
-        {
-            name: "avatar",
-            maxCount: 1
-        },
-        {
-            name: "coverImage",
-            maxCount: 1
-        }
-    ])
+        upload.fields([
+            {
+                name: "avatar",
+                maxCount: 1
+            },
+            {
+                name: "coverImage",
+                maxCount: 1
+            }
+        ])
     ,registerUser)
 
 router.route("/login").post(loginUser)
@@ -45,7 +46,9 @@ router.route("/history").get(verifyJWT, getWatchHistory)
 
 //File handling routes (Multer)
 router.route("/avatar").patch(verifyJWT,upload.single("avatar"),updateUserAvatar)
-router.route("?coverImage").patch(verifyJWT,upload.single("coverImage"),updateUserAvatar)
+router.route("/coverImage").patch(verifyJWT,upload.single("coverImage"),updateUserCoverImage)
+
+
 
 
 
