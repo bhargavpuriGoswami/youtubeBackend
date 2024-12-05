@@ -57,3 +57,20 @@ This is an example of how you may give instructions on postman to check your pro
 To get a local copy up and running follow these simple example steps.
 
 Go to [Postman Documentation](https://documenter.getpostman.com/view/32526585/2sAYBaApjZ).
+
+
+
+
+### Built With
+
+* [![NodeJS][Node.js]][Node-url]
+* [![ExpressJS][Express.js]][express-url]
+* [![MongoDB][mongo.db]][mongo-url]
+
+  [Node.js]: https://img.shields.io/badge/node.js-096b02?style=for-the-badge&logo=npm&logoColor=white
+  [Node-url]: https://nodejs.org/en
+  [Express.js]: https://img.shields.io/badge/express.js-010521?style=for-the-badge&logo=express&logoColor=green
+  [express-url]: https://expressjs.com/
+  [mongo.db]: https://img.shields.io/badge/mongo.db-011a0a?style=for-the-badge&logo=mongodb&logoColor=green
+  [mongo-url]: https://www.mongodb.com/
+  
