@@ -1,3 +1,11 @@
+### Built With
+
+[![NodeJS][Node.js]][Node-url] &nbsp;
+[![ExpressJS][Express.js]][express-url] &nbsp;
+[![MongoDB][mongo.db]][mongo-url] &nbsp;
+[![Cloudinary][cloudinary]][cloudinary-url]
+
+
 <!-- GETTING STARTED -->
 ## Getting Started
 
@@ -61,16 +69,14 @@ Go to [Postman Documentation](https://documenter.getpostman.com/view/32526585/2s
 
 
 
-### Built With
 
-* [![NodeJS][Node.js]][Node-url]
-* [![ExpressJS][Express.js]][express-url]
-* [![MongoDB][mongo.db]][mongo-url]
 
   [Node.js]: https://img.shields.io/badge/node.js-096b02?style=for-the-badge&logo=npm&logoColor=white
   [Node-url]: https://nodejs.org/en
-  [Express.js]: https://img.shields.io/badge/express.js-010521?style=for-the-badge&logo=express&logoColor=green
+  [Express.js]: https://img.shields.io/badge/express.js-010521?style=for-the-badge&logo=express&logoColor=white
   [express-url]: https://expressjs.com/
   [mongo.db]: https://img.shields.io/badge/mongo.db-011a0a?style=for-the-badge&logo=mongodb&logoColor=green
   [mongo-url]: https://www.mongodb.com/
+  [cloudinary]: https://img.shields.io/badge/Cloudinary-4a0ee3?style=for-the-badge&logo=cloudinary&logoColor=white
+  [cloudinary-url]: https://www.mongodb.com/
   
