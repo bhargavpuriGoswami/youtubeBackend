@@ -71,7 +71,7 @@ Go to [Postman Documentation](https://documenter.getpostman.com/view/32526585/2s
 
 
 
-  [Node.js]: https://img.shields.io/badge/node.js-096b02?style=for-the-badge&logo=npm&logoColor=white
+  [Node.js]: https://img.shields.io/badge/node.js-096b02?style=for-the-badge&logo=node.js&logoColor=white
   [Node-url]: https://nodejs.org/en
   [Express.js]: https://img.shields.io/badge/express.js-010521?style=for-the-badge&logo=express&logoColor=white
   [express-url]: https://expressjs.com/
